@@ -1,66 +1,44 @@
 Duck Typing
 ==========
-Duck Typing is a concept in programming where within a context an object will be defined by what the context requires. A real world example may be a bed. If you want to define an object as a bed your context may be that it is flat, it is level and long enough for your body to lay on. Many objects have these properties such as a floor and a long table and in the context we require are useable as beds. Floors can be slept on if all you care about with your bed is that it is flat, level and long enough.
+Duck Typing is a concept in programming avialable to use in ruby which allows methods to to be called regardless of the object that is being passed into the method. An object only needs to have a method that responds to the method being called. 
 
-If you were to change your requirements for a bed however(changing the context) and perhaps you want the bed to be comfortable, have a blanket and pillow. Then the floor and table are no longer beds. 
+In the code example below we have have a class called Oven which has the cook method. This method takes as an argument which can be any object that responds to the method **heat**
 
-In the example below we have used the classes Duck, Goose and Birdwatcher . We have a method is a duck which requires a duck to respond to be a duck. That is all we need in our context for the object to be a duck. Instances of the duck and birdwatcher are therefore ducks. 
+The 3 different food classed below **Pie** , **Fish** and **BakedAlaska** can all be passed into **Oven#cook** as they all have methods named heat that respond to the call to heat in Oven's cooke method. Ruby does care that different classes are being called on the same method. Also note **BakedAlaska** is being passed into **Oven#cook** at a class method rather than an instance method and Oven's cook method will call the heat method regardless of this.
+
+
+
 ```
-class Duck
+class Oven
 
-  def quack
-    "Quack!!!!!!!!"
-  end
-
-  def walk
-    "walk"
-  end
-
-  def swim
-    "I am swimming"
+  def cook food
+    food.heat
   end
 end
 
-class Goose
+class Pie
 
-  def lay_eggs
-    "lay_eggs"
-  end
-
-  def walk
-    "walk"
-  end
-
-  def swim
-    "I am swimming"
+  def heat
+    "gets warm"
   end
 end
 
-class Birdwatcher
+class Fish
 
-  def quack
-    blow_duck_caller
-  end
-
-  def blow_duck_caller
-    "Quaaaaaaak!!!!!!!!!!!"
-  end
-
-  def walk
-    "I am walking"
+  def heat
+    "gets warm and smelly"
   end
 end
 
-duck = Duck.new
-goose = Goose.new
-twitcher = Birdwatcher.new
+class BakedAlaska
 
-def is_a_duck(duck)
-  return "is as duck"  if duck.respond_to?(:quack) && duck.respond_to?(:walk)
-  return "not a duck"
+  def self.heat
+    "gets warm on the outside, stays cold on the inside"
+  end
 end
 
-puts is_a_duck(duck) #expecting this to be a duck
-puts is_a_duck(goose) #expecting this not to be a duck
-puts is_a_duck(twitcher) #this is also a duck as it responds to the criteria 
+oven = Oven.new
+puts oven.cook(Pie.new)
+puts oven.cook(Fish.new)
+puts oven.cook(BakedAlaska)
 ```   
